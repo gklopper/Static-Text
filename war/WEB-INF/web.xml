@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<servlet>
+		<servlet-name>StaticTextEditor</servlet-name>
+		<servlet-class>com.gu.upload.tools.StaticTextCreateAndEditServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>StaticTextList</servlet-name>
+		<servlet-class>com.gu.upload.tools.StaticTextListServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>StaticText</servlet-name>
+		<servlet-class>com.gu.upload.staticfile.StaticTextServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>StaticTextList</servlet-name>
+		<url-pattern>/admin/statictext/list</url-pattern>
+	</servlet-mapping>
+
+	<!-- 
+		/admin/statictext/new
+		/admin/statictext/1234
+	-->	
+	<servlet-mapping>
+		<servlet-name>StaticTextEditor</servlet-name>
+		<url-pattern>/admin/statictext/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>StaticText</servlet-name>
+		<url-pattern>/statictext/*</url-pattern>
+	</servlet-mapping>
+	
+	<security-constraint>
+        <web-resource-collection>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>
