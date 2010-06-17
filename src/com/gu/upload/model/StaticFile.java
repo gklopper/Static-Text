@@ -5,43 +5,30 @@ import siena.Id;
 import siena.Model;
 import siena.Query;
 import siena.Table;
-import siena.gae.Unindexed;
 
-@Table("StaticText")
-public class StaticText extends Model {
+@Table("StaticFile")
+public class StaticFile extends Model {
 	
 	@Id private Long id;
 	
-	@Column("text") @Unindexed 
-	private String text;
+	@Column("blobKey")
+	private String blobKey;
 	
 	@Column("name") private String name;
 	@Column("path") private String path;
-	@Column("type") private String type = "text/html; charset=UTF-8";
+	@Column("type") private String type = "image/gif";
 	@Column("owner") private String owner;
 	
-	public static Query<StaticText> all() {
-		return Model.all(StaticText.class);
+	public static Query<StaticFile> all() {
+		return Model.all(StaticFile.class);
 	}
 	
-	public static StaticText findById(Long id) {
-		return all().filter("id", id).get();
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public String getText() {
-		return text;
-	}
-
 	public boolean isNew() {
 		return getId() == null;
 	}
 
 	public boolean isPathUnique() {
-		StaticText model = all().filter("path", path).get();
+		StaticFile model = all().filter("path", path).get();
 		if (model == null) {
 			return true;
 		}
@@ -91,4 +78,11 @@ public class StaticText extends Model {
 	public Long getId() {
 		return id;
 	}
-}
+
+	public void setBlobKey(String blobKey) {
+		this.blobKey = blobKey;
+	}
+
+	public String getBlobKey() {
+		return blobKey;
+	}}

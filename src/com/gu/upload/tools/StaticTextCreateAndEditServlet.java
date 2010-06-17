@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.users.UserServiceFactory;
 import com.gu.upload.model.StaticText;
 
 @SuppressWarnings("serial")
-public class StaticTextCreateAndEditServlet extends HttpServlet {
+public class StaticTextCreateAndEditServlet extends BaseCreateAndEditServlet {
 	
 	private static final Pattern URL_SAFE_REGEX = Pattern.compile("[a-zA-Z0-9\\-\\.]*");
 	
@@ -31,7 +29,7 @@ public class StaticTextCreateAndEditServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
-		StaticText staticText = buildStaticTextFromRequest(request);
+		StaticText staticText = buildModelFromRequest(request);
 		List<String> errors = validate(staticText);
 		
 		if (errors.isEmpty()) {
@@ -45,10 +43,6 @@ public class StaticTextCreateAndEditServlet extends HttpServlet {
 		getServletContext().getRequestDispatcher("/WEB-INF/views/tools/statictext.jsp").forward(request, response);
 	}
 
-	private String getUserEmail() {
-		return UserServiceFactory.getUserService().getCurrentUser().getEmail();
-	}
-	
 	private List<String> validate(StaticText staticText) {
 		List<String> errors = new ArrayList<String>();
 		if (anyFieldIsEmpty(staticText)) {
@@ -82,18 +76,16 @@ public class StaticTextCreateAndEditServlet extends HttpServlet {
 		return text == null || text.trim().length() == 0;
 	}
 
-	private StaticText buildStaticTextFromRequest(HttpServletRequest request) {
-		
+	private StaticText buildModelFromRequest(HttpServletRequest request) {
 		String idString = request.getParameter("id");
 		StaticText staticText = new StaticText();
 		
 		if (idString != null && idString.trim().length() > 0) {
 			staticText = StaticText.findById(Long.parseLong(idString));
 		}
-		
+		staticText.setText(request.getParameter("text"));
 		staticText.setName(request.getParameter("name"));
 		staticText.setPath(request.getParameter("path"));
-		staticText.setText(request.getParameter("text"));
 		staticText.setType(request.getParameter("type"));
 		return staticText;
 	}
