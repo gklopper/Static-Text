@@ -102,6 +102,13 @@
 					
 		</form>
 		
+		<br>
+		<table>
+			<tr>
+				<td><a href="./list">All Static Text</a></td>
+				<td><a href="../../">Home</a></td>
+			</tr>
+		</table>
 
 	</body>
 </html>

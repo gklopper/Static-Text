@@ -23,6 +23,10 @@ public class StaticFile extends Model {
 		return Model.all(StaticFile.class);
 	}
 	
+	public static StaticFile findById(Long id) {
+		return all().filter("id", id).get();
+	}
+	
 	public boolean isNew() {
 		return getId() == null;
 	}

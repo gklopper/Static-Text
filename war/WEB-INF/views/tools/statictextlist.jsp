@@ -36,6 +36,14 @@
 			</tr>	
 		</c:forEach>
 		</table>
-
+		
+		<br>
+		<table>
+			<tr>
+				<td><a href="./new">Create New Static Text</a></td>
+				<td><a href="../../">Home</a></td>
+			</tr>
+		</table>
+		
 	</body>
 </html>

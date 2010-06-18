@@ -57,13 +57,20 @@
 			<fieldset>
 				<input type="file" name="uploadedFile"/>
 			</fieldset>
-			
+			<br>
 			<fieldset>
 				<input type="Submit" value="Save"/>
 			</fieldset>
 					
 		</form>
 		
+		<br>
+		<table>
+			<tr>
+				<td><a href="./list">All Static Files</a></td>
+				<td><a href="../../">Home</a></td>
+			</tr>
+		</table>
 
 	</body>
 </html>
