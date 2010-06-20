@@ -7,7 +7,7 @@ import siena.Query;
 import siena.Table;
 
 @Table("StaticFile")
-public class StaticFile extends Model {
+public class StaticFile extends Model implements BaseModel{
 	
 	@Id private Long id;
 	

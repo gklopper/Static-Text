@@ -1,0 +1,91 @@
+.nav {
+	background-color: #C0C0C0;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+.nav li {
+	display: inline;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-top: 2px;
+	padding-bottom: 2px; 
+}
+
+h1 {
+	font-family: sans-serif;
+	font-size: 25px;
+}
+
+h2 {
+	font-family: sans-serif;
+	font-size: 16px;
+}
+
+.block {
+	background-color: #A0A0A0;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px; 
+	padding: 10px;
+}
+
+fieldset {
+	width: 250px;
+	display: inline;
+	border-style: none;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-bottom: 5px;
+	background-color: #C0C0C0;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+}
+
+.large {
+	width: 518px;
+}
+
+textarea {
+	width: 520px;
+	height: 300px;
+}
+
+fieldset label {
+	display: block; 
+}
+
+.read-only {
+	color: graytext;
+}
+
+input {
+	width: 250px;
+}
+
+.short {
+	width: 186px;;
+}
+
+.submit {
+	width: auto;
+	right: 0px;
+}
+
+td, th {
+	padding-right: 10px;
+	padding-top: 5px;
+	border-right-style: solid;
+	border-right-width: 1px;
+}
+
+.name {
+	font-weight: bold;
+}
+
+.first {
+	border-right: none;
+}
+
+.error {
+	color: red;
+}

@@ -1,21 +1,27 @@
 package com.gu.upload.tools;
 
+import static com.gu.upload.tools.util.Validation.anyCommonFieldIsEmpty;
+import static com.gu.upload.tools.util.Validation.pathIsNotUnique;
+import static com.gu.upload.tools.util.Validation.pathNotUrlSafe;
+import static com.gu.upload.tools.util.Validation.empty;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.gu.upload.model.StaticText;
+import com.gu.upload.tools.util.User;
 
 @SuppressWarnings("serial")
-public class StaticTextCreateAndEditServlet extends BaseCreateAndEditServlet {
+public class StaticTextCreateAndEditServlet extends HttpServlet {
 	
-	private static final Pattern URL_SAFE_REGEX = Pattern.compile("[a-zA-Z0-9\\-\\.]*");
+	
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String path = request.getPathInfo();
@@ -33,7 +39,7 @@ public class StaticTextCreateAndEditServlet extends BaseCreateAndEditServlet {
 		List<String> errors = validate(staticText);
 		
 		if (errors.isEmpty()) {
-			staticText.setOwner(getUserEmail());
+			staticText.setOwner(User.currentUserEmail());
 			staticText.insertOrUpdate();
 		}
 
@@ -45,35 +51,16 @@ public class StaticTextCreateAndEditServlet extends BaseCreateAndEditServlet {
 
 	private List<String> validate(StaticText staticText) {
 		List<String> errors = new ArrayList<String>();
-		if (anyFieldIsEmpty(staticText)) {
+		if (anyCommonFieldIsEmpty(staticText) || empty(staticText.getText())) {
 			errors.add("All fields are required, none may be empty.");
 		}
-		
 		if (pathNotUrlSafe(staticText)) {
-			errors.add("Only letters, numbers, hypen '-' and dot '.' are allowed in the path.");
+			errors.add("Only letters, numbers, slash '/', hypen '-' and dot '.' are allowed in the path.");
 		}
-		
 		if (pathIsNotUnique(staticText)) {
 			errors.add(String.format("The path [%s] is already in use, please choose another", staticText.getPath()));
 		}
-		
 		return errors;
-	}
-
-	private boolean pathIsNotUnique(StaticText staticText) {
-		return !empty(staticText.getPath()) && !staticText.isPathUnique();
-	}
-
-	private boolean pathNotUrlSafe(StaticText staticText) {
-		return !empty(staticText.getPath()) && !URL_SAFE_REGEX.matcher(staticText.getPath()).matches();
-	}
-
-	private boolean anyFieldIsEmpty(StaticText staticText) {
-		return empty(staticText.getName()) || empty(staticText.getPath()) || empty(staticText.getText()) || empty(staticText.getType());
-	}
-
-	private boolean empty(String text) {
-		return text == null || text.trim().length() == 0;
 	}
 
 	private StaticText buildModelFromRequest(HttpServletRequest request) {
@@ -94,7 +81,7 @@ public class StaticTextCreateAndEditServlet extends BaseCreateAndEditServlet {
 		StaticText staticText;
 		if (path.equals("/new")) {
 			staticText = new StaticText();
-			staticText.setOwner(getUserEmail());	
+			staticText.setOwner(User.currentUserEmail());	
 		} else {
 			Long id = Long.parseLong(path.replace("/", ""));
 			staticText = StaticText.findById(id);

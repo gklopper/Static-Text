@@ -8,7 +8,7 @@ import siena.Table;
 import siena.gae.Unindexed;
 
 @Table("StaticText")
-public class StaticText extends Model {
+public class StaticText extends Model implements BaseModel {
 	
 	@Id private Long id;
 	

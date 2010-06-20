@@ -1,66 +1,21 @@
 <%@page contentType="text/html; charset=UTF-8" isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="ui" tagdir="/WEB-INF/tags" %>
 
 <html>
 	<head>
 		<title>Static text editor</title>
-		<style type="text/css">
-			
-			h1 {
-				font-size: 20px;
-			}
-			
-			label {
-				width: 200px;
-				font-weight: bold;
-			}
-			
-			.default {
-				color: graytext;
-			}
-			
-			fieldset {
-				display: inline;
-				border-style: solid;
-				border-color: silver;
-				border-top: none;
-				border-left: none;
-				border-width: 1px;
-			}
-			
-			input {
-				width: 200px;
-			}
-			
-			.short {
-				width: 136px;
-			}
-			
-			.large {
-				display: block;
-				border-right: none;
-				width: 600px;
-			}
-			
-			textarea {
-				width: 600px;
-				height: 300px;
-			}
-			
-			.error {
-				font-weight: bold;
-				color: red;
-			}
-			
-		</style>
+		<link rel="stylesheet" type="text/css" href="/style/admin.css" media="all" />
 </head>
 	<body>
+<ui:navigation/>
+<div class="block">
 		<c:choose>
 			<c:when test="${statictext.new}">
-				<h1>Edit Static Text</h1>
+				<h1>New Static Text</h1>
 			</c:when>
 			<c:otherwise>
-				<h1>New Static Text</h1>
+				<h1>Edit Static Text</h1>
 			</c:otherwise>
 		</c:choose>
 		
@@ -78,37 +33,37 @@
 			</fieldset>
 			
 			<fieldset>
-			<label for="path">Path</label>
-			<span class="default">/statictext/</span><input class="short" id="path" name="path" value="${statictext.path}"/>
-			</fieldset>
-			
-			<fieldset>
 			<label for="type">Type</label>
 			<input id="type" name="type" value="${statictext.type}"/>
 			</fieldset>
 			
+			<br/>
+			
+			<fieldset>
+			<label for="path">Path</label>
+			<span class="read-only">/statictext/</span><input class="short" id="path" name="path" value="${statictext.path}"/>
+			</fieldset>
+			
 			<fieldset>
 			<label for="owner">Owner</label>
-			<input class="default" readonly="readonly" id="owner" name="owner" value="${statictext.owner}"/>
+			<input class="read-only" readonly="readonly" id="owner" name="owner" value="${statictext.owner}"/>
 			</fieldset>
+			
+			<br/>
 			
 			<fieldset class="large">
 				<textarea name="text">${statictext.text}</textarea>
 			</fieldset>
 			
-			<fieldset>
-				<input type="Submit" value="Save"/>
+			<br/>
+			
+			<fieldset class="large">
+				<input class="submit" type="Submit" value="Save"/>
 			</fieldset>
 					
 		</form>
 		
 		<br>
-		<table>
-			<tr>
-				<td><a href="./list">All Static Text</a></td>
-				<td><a href="../../">Home</a></td>
-			</tr>
-		</table>
-
+</div>
 	</body>
 </html>
