@@ -24,6 +24,8 @@
 			<span class="read-only">/staticfile/</span><input class="short" id="path" name="path" value="${file.path}"/>
 			</fieldset>
 			
+			<br/>
+			
 			<fieldset>
 			<label for="type">Type</label>
 			<input id="type" name="type" value="${file.type}"/>
@@ -33,6 +35,8 @@
 			<label for="owner">Owner</label>
 			<input class="read-only" readonly="readonly" id="owner" name="owner" value="${file.owner}"/>
 			</fieldset>
+			
+			<br/>
 			
 			<fieldset>
 				<input type="file" name="uploadedFile"/>

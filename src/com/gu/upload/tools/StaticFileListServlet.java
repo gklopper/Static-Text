@@ -24,7 +24,7 @@ public class StaticFileListServlet extends HttpServlet{
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Long id = Long.parseLong(request.getParameter("fileToDelete"));
+		Long id = Long.parseLong(request.getParameter("idToDelete"));
 		
 		StaticFile file = StaticFile.findById(id);
 		

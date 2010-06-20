@@ -16,4 +16,12 @@ public class StaticTextListServlet extends HttpServlet {
 		request.setAttribute("texts", StaticText.all().order("name").fetch(1000));
 		getServletContext().getRequestDispatcher("/WEB-INF/views/tools/statictextlist.jsp").forward(request, response);
 	}
+	
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Long id = Long.parseLong(request.getParameter("idToDelete"));
+		StaticText text = StaticText.findById(id);
+		text.delete();
+		response.sendRedirect("/admin/statictext/list");
+	}
 }

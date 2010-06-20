@@ -14,15 +14,15 @@
 		<h2>cached for 1 hour</h2>
 	
 		<table>
-		<tr><th colspan="2">Name</th><th>Content Type</th><th>Component path</th><th>Raw resource</th><th>Owner</th></tr>	
+		<tr><th colspan="2">Name</th><th>Content Type</th><th>Component path</th><th colspan="2">Owner</th></tr>	
 		<c:forEach var="text" items="${texts}">
 			<tr>
 				<td class="name first">${text.name}</td>
 				<td><a href="/admin/statictext/${text.id}">edit</a></td>
 				<td>${text.type}</td>
 				<td>/statictext/${text.path}</td>
-				<td><a href="http://resource.guim.co.uk/global/static/text/${text.path}">http://resource.guim.co.uk/global/static/text/${text.path}</a></td>			
 				<td>${text.owner}</td>
+				<td><ui:deleteButton idToDelete="${text.id}" message="Are you sure you wan to delete this text?"/></td>
 			</tr>	
 		</c:forEach>
 		</table>
