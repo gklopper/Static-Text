@@ -25,8 +25,8 @@ public class StaticTextServlet extends HttpServlet {
 		
 		response.setContentType(staticText.getType());
 		
-		//cache for a day
-		response.setHeader("Cache-Control", "max-age=86400");
+		//cache for one hour
+		response.setHeader("Cache-Control", "max-age=3600");
 		response.getWriter().println(staticText.getText());
 	}
 
