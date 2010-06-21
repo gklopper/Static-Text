@@ -22,7 +22,7 @@
 				<td>${text.type}</td>
 				<td>/statictext/${text.path}</td>
 				<td>${text.owner}</td>
-				<td><ui:deleteButton idToDelete="${text.id}" message="Are you sure you wan to delete this text?"/></td>
+				<td><ui:deleteButton idToDelete="${text.id}" message="Are you sure you want to delete this text?"/></td>
 			</tr>	
 		</c:forEach>
 		</table>

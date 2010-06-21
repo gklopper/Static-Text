@@ -21,7 +21,7 @@
 				<td><a href="http://resource.guim.co.uk/global/static/file/${file.path}">http://resource.guim.co.uk/global/static/file/${file.path}</a></td>			
 				<td>${file.owner}</td>
 				<td>
-					<ui:deleteButton message="Are you sure you wan to delete this file?" idToDelete="${file.id}"/>
+					<ui:deleteButton message="Are you sure you want to delete this file?" idToDelete="${file.id}"/>
 				</td>
 			</tr>	
 		</c:forEach>
