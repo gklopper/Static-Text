@@ -25,6 +25,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>com.gu.upload.staticfile.StaticTextServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>Proxy</servlet-name>
+		<servlet-class>com.gu.upload.proxy.ProxyServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>StaticFile</servlet-name>
 		<servlet-class>com.gu.upload.staticfile.StaticFileServlet</servlet-class>
 	</servlet>
@@ -65,6 +69,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>StaticFile</servlet-name>
 		<url-pattern>/staticfile/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Proxy</servlet-name>
+		<url-pattern>/proxy</url-pattern>
 	</servlet-mapping>
 	
 	<security-constraint>
