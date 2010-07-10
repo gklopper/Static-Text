@@ -30,7 +30,7 @@ public class StaticFileServlet extends HttpServlet {
 		response.setContentType(staticFile.getType());
 
 		// cache for a day
-		response.setHeader("Cache-Control", "max-age=86400");
+		response.setHeader("Cache-Control", "public, max-age=86400");
 
 		BlobstoreServiceFactory.getBlobstoreService().serve(
 				new BlobKey(staticFile.getBlobKey()), response);

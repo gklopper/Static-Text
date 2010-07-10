@@ -33,7 +33,7 @@ public class ProxyServlet extends HttpServlet {
 			}
 		}
 		
-		response.setHeader("Cache-Control", "max-age=86000");
+		response.setHeader("Cache-Control", "public, max-age=86000");
 		
 		OutputStream out = new BufferedOutputStream(response.getOutputStream());
 		out.write(contents);
