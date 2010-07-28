@@ -4,9 +4,24 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+
+	<filter>
+		<filter-name>ProjectFilter</filter-name>
+		<filter-class>com.gu.upload.tools.ProjectFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>ProjectFilter</filter-name>
+		<url-pattern>/admin/*</url-pattern>
+	</filter-mapping>
+
 	<servlet>
 		<servlet-name>StaticTextEditor</servlet-name>
 		<servlet-class>com.gu.upload.tools.StaticTextCreateAndEditServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ProjectEditor</servlet-name>
+		<servlet-class>com.gu.upload.tools.ProjectCreateAndEditServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>StaticFileEditor</servlet-name>
@@ -59,6 +74,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>StaticFileEditor</servlet-name>
 		<url-pattern>/admin/staticfile/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 
+		/admin/project/new
+		/admin/project/1234
+	-->	
+	<servlet-mapping>
+		<servlet-name>ProjectEditor</servlet-name>
+		<url-pattern>/admin/project/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
