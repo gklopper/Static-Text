@@ -33,7 +33,7 @@ public class BlobImportServlet extends HttpServlet {
         for (StaticFile file : files) {
             log("importing " + file.getPath());
             try {
-                String url = "http://static-host.appspot.com/staticfile/" + file.getPath();
+                String url = "http://static-host.appspot.com/staticfile/json/" + file.getPath();
                 String json = HttpRequest.get(url).contentType("application/json").body();
                 // TODO: convert JSON to blob
                 log("Response was: " + json);
