@@ -10,15 +10,14 @@ import siena.Table;
 public class StaticFile extends Model implements BaseModel{
 	
 	@Id private Long id;
-	
-	@Column("blobKey")
-	private String blobKey;
-	
+	@Column("blobKey") private String blobKey;
 	@Column("name") private String name;
 	@Column("path") private String path;
 	@Column("type") private String type = "image/gif";
 	@Column("owner") private String owner;
-	
+
+    private String fileData;
+
 	public static Query<StaticFile> all() {
 		return Model.all(StaticFile.class);
 	}
@@ -93,4 +92,14 @@ public class StaticFile extends Model implements BaseModel{
 
 	public String getBlobKey() {
 		return blobKey;
-	}}
+	}
+
+    public void setData(String data) {
+        this.fileData = data;
+    }
+
+    public String getData() {
+        return fileData;
+    }
+
+}
