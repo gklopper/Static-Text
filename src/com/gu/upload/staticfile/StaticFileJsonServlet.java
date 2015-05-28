@@ -1,0 +1,58 @@
+package com.gu.upload.staticfile;
+
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.gu.upload.model.JsonResponse;
+import com.gu.upload.model.StaticFile;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+@SuppressWarnings("serial")
+public class StaticFileJsonServlet extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		String path = request.getPathInfo();
+        List<StaticFile> staticFiles = new ArrayList<StaticFile>();
+
+        if(path.endsWith("/all")) {
+            staticFiles.addAll(StaticFile.all().order("name").fetch());
+        } else {
+            StaticFile file = StaticFile.all().filter("path", removeLeadingSlash(path)).get();
+            if (file != null) {
+                staticFiles.add(file);
+            }
+        }
+
+		// no caching of json
+
+        for (StaticFile file : staticFiles) {
+            String fileData = BlobstoreServiceFactory
+                    .getBlobstoreService()
+                    .fetchData(new BlobKey(file.getBlobKey()), 0, BlobstoreService.MAX_BLOB_FETCH_SIZE)
+                    .toString();
+            file.setData(fileData);
+        }
+
+        response.setContentType("application/json");
+        response.setStatus(200);
+        PrintWriter out = response.getWriter();
+        out.print(new JsonResponse(staticFiles).toJson());
+
+	}
+
+	private String removeLeadingSlash(String path) {
+		if (path != null && path.length() > 1 && path.startsWith("/")) {
+			path = path.substring(1);
+		}
+		return path;
+	}
+
+}
