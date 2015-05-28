@@ -15,7 +15,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/admin/*</url-pattern>
 	</filter-mapping>
 
-	<servlet>
+    <servlet>
+        <servlet-name>BlobImport</servlet-name>
+        <servlet-class>com.gu.upload.tools.BlobImportServlet</servlet-class>
+    </servlet>
+    <servlet>
 		<servlet-name>StaticTextEditor</servlet-name>
 		<servlet-class>com.gu.upload.tools.StaticTextCreateAndEditServlet</servlet-class>
 	</servlet>
@@ -57,6 +61,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>StaticFileList</servlet-name>
 		<url-pattern>/admin/staticfile/list</url-pattern>
 	</servlet-mapping>
+
+    <!--
+        /admin/staticfile/importblob/all
+        /admin/staticfile/importblob/static-file-path
+    -->
+    <servlet-mapping>
+        <servlet-name>BlobImport</servlet-name>
+        <url-pattern>/admin/staticfile/importblob/*</url-pattern>
+    </servlet-mapping>
 
 	<!-- 
 		/admin/statictext/new

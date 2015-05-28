@@ -26,7 +26,11 @@ public class StaticFile extends Model implements BaseModel{
 	public static StaticFile findById(Long id) {
 		return all().filter("id", id).get();
 	}
-	
+
+    public static StaticFile findByPath(String path) {
+        return all().filter("path", path).get();
+    }
+
 	public boolean isNew() {
 		return getId() == null;
 	}
