@@ -3,6 +3,7 @@ package com.gu.upload.staticfile;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.repackaged.org.apache.commons.codec.binary.Base64;
 import com.gu.upload.model.JsonResponse;
 import com.gu.upload.model.StaticFile;
 
@@ -37,7 +38,8 @@ public class StaticFileJsonServlet extends HttpServlet {
             byte[] fileData = BlobstoreServiceFactory
                     .getBlobstoreService()
                     .fetchData(new BlobKey(file.getBlobKey()), 0, BlobstoreService.MAX_BLOB_FETCH_SIZE - 1);
-            file.setData(fileData);
+            String base64fileData = Base64.encodeBase64String(fileData);
+            file.setData(base64fileData);
         }
 
         response.setContentType("application/json");
