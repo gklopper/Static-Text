@@ -90,8 +90,8 @@ public class StaticFile extends Model implements BaseModel{
 		return blobKey;
 	}
 
-    public void setData(String data) {
-        this.fileData = data;
+    public void setData(byte[] data) {
+        this.fileData = new String(data);
     }
 
     public String getData() {
