@@ -36,7 +36,7 @@ public class StaticFileJsonServlet extends HttpServlet {
         for (StaticFile file : staticFiles) {
             String fileData = BlobstoreServiceFactory
                     .getBlobstoreService()
-                    .fetchData(new BlobKey(file.getBlobKey()), 0, BlobstoreService.MAX_BLOB_FETCH_SIZE)
+                    .fetchData(new BlobKey(file.getBlobKey()), 0, BlobstoreService.MAX_BLOB_FETCH_SIZE - 1)
                     .toString();
             file.setData(fileData);
         }
