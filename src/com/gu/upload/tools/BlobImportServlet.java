@@ -1,13 +1,11 @@
 package com.gu.upload.tools;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.files.AppEngineFile;
-import com.google.appengine.api.files.FileService;
-import com.google.appengine.api.files.FileServiceFactory;
-import com.google.appengine.api.files.FileWriteChannel;
-import com.google.appengine.repackaged.org.apache.commons.codec.binary.Base64;
+import com.google.appengine.tools.cloudstorage.*;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.gu.upload.model.JsonResponse;
 import com.gu.upload.model.StaticFile;
@@ -18,22 +16,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
-import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.Gson;
 
 public class BlobImportServlet extends HttpServlet {
 
+    public static final String BUCKETNAME = "static-host-hrd.appspot.com";
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)  throws IOException, ServletException {
-        // Get a file service
-        FileService fileService = FileServiceFactory.getFileService();
+        BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+        GcsService gcsService = GcsServiceFactory.createGcsService(RetryParams.getDefaultInstance());
 
         Gson gson = new Gson();
         String path = request.getPathInfo();
-        BlobstoreService bs = BlobstoreServiceFactory.getBlobstoreService();
         List<StaticFile> localFiles = new ArrayList<StaticFile>();
 
         if(path.equals("/all")) {
@@ -59,23 +58,25 @@ public class BlobImportServlet extends HttpServlet {
                 for (StaticFile remoteFile : remoteFiles) {
                     log("Checking remote file: " + remoteFile.getPath());
                     if (remoteFile.getPath().equals(localFile.getPath())) {
-                        log("Processing remote file: " + remoteFile.getPath());
-                        // Create a new Blob file with expected mime-type
-                        log("  createNewBlobFile");
-                        AppEngineFile newLocalFile = fileService.createNewBlobFile(localFile.getType());
-                        // Open a channel to write to it
-                        boolean lock = true;
-                        log("  openWriteChannel");
-                        FileWriteChannel writeChannel = fileService.openWriteChannel(newLocalFile, lock);
-                        // Write the blob data to the channel directly
-                        log("  writeChannel.write");
-                        writeChannel.write(ByteBuffer.wrap(Base64.decodeBase64(remoteFile.getData().getBytes())));
+                        GcsFilename gcsFileName = new GcsFilename(BUCKETNAME, localFile.getPath());
+                        log("Processing file: " + localFile.getPath());
+                        log("  gcsService.createOrReplace");
+                        GcsFileOptions gcsFileOptions = new GcsFileOptions.Builder().mimeType(localFile.getType()).build();
+                        GcsOutputChannel outputChannel = gcsService.createOrReplace(gcsFileName, gcsFileOptions);
+                        log("  create ObjectOutputStream");
+                        @SuppressWarnings("resource")
+                        ObjectOutputStream oout = new ObjectOutputStream(Channels.newOutputStream(outputChannel));
+                        // Write the blob data to the output stream directly
+                        log("  writeObject");
+                        oout.write(Base64.decodeBase64(remoteFile.getData().getBytes()));
                         // And finalize
-                        log("  writeChannel.closeFinally");
-                        writeChannel.closeFinally();
+                        log("  close");
+                        oout.close();
                         // Get the new file's BlobKey
-                        log("  fileService.getBlobKey");
-                        BlobKey blobKey = fileService.getBlobKey(newLocalFile);
+                        log("  blobstoreService.createGsBlobKey");
+                        BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/" +
+                                gcsFileName.getBucketName() + "/" +
+                                gcsFileName.getObjectName());
                         // Update the local StaticFile's blobkey
                         log(" localFile.setBlobKey");
                         localFile.setBlobKey(blobKey.getKeyString());
