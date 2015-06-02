@@ -7,6 +7,7 @@ import com.google.appengine.api.files.AppEngineFile;
 import com.google.appengine.api.files.FileService;
 import com.google.appengine.api.files.FileServiceFactory;
 import com.google.appengine.api.files.FileWriteChannel;
+import com.google.appengine.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.gson.reflect.TypeToken;
 import com.gu.upload.model.JsonResponse;
 import com.gu.upload.model.StaticFile;
@@ -68,7 +69,7 @@ public class BlobImportServlet extends HttpServlet {
                         FileWriteChannel writeChannel = fileService.openWriteChannel(newLocalFile, lock);
                         // Write the blob data to the channel directly
                         log("  writeChannel.write");
-                        writeChannel.write(ByteBuffer.wrap(remoteFile.getData().getBytes()));
+                        writeChannel.write(ByteBuffer.wrap(Base64.decodeBase64(remoteFile.getData().getBytes())));
                         // And finalize
                         log("  writeChannel.closeFinally");
                         writeChannel.closeFinally();
