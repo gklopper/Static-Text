@@ -67,8 +67,20 @@ public class BlobImportServlet extends HttpServlet {
                         @SuppressWarnings("resource")
                         ObjectOutputStream oout = new ObjectOutputStream(Channels.newOutputStream(outputChannel));
                         // Write the blob data to the output stream directly
-                        log("  writeObject");
-                        oout.write(Base64.decodeBase64(remoteFile.getData().getBytes()));
+                        log("  decode");
+                        String fileContentBase64Enc = remoteFile.getData();
+                        byte[] fileContentDecoded = Base64.decodeBase64(fileContentBase64Enc);
+                        if (!Base64.encodeBase64URLSafeString(fileContentDecoded).equals(fileContentBase64Enc)) {
+                            log("  !! decoding error !!\n"
+                                    + new String(fileContentDecoded) + "\n"
+                                    + " was not re-encoded to\n"
+                                    + fileContentBase64Enc);
+                        } else {
+                            log ("  decoding successful");
+                        }
+
+                        log("  write");
+                        oout.write(fileContentDecoded);
                         // And finalize
                         log("  close");
                         oout.close();
