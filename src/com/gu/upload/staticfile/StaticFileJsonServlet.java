@@ -38,7 +38,7 @@ public class StaticFileJsonServlet extends HttpServlet {
             byte[] fileData = BlobstoreServiceFactory
                     .getBlobstoreService()
                     .fetchData(new BlobKey(file.getBlobKey()), 0, BlobstoreService.MAX_BLOB_FETCH_SIZE - 1);
-            String base64fileData = Base64.encodeBase64String(fileData);
+            String base64fileData = Base64.encodeBase64URLSafeString(fileData); // UTF-8, JSON-safe
             file.setData(base64fileData);
         }
 
