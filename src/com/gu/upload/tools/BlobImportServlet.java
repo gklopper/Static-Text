@@ -16,9 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
-import java.nio.channels.Channels;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +48,6 @@ public class BlobImportServlet extends HttpServlet {
             try {
                 String url = "http://static-host.appspot.com/staticfile/json/" + localFile.getPath();
                 String json = HttpRequest.get(url).contentType("application/json").body();
-                log("Response was: " + json);
 
                 Type responseType = new TypeToken<JsonResponse>(){}.getType();
                 JsonResponse jsonResponse = gson.fromJson(json, responseType);
@@ -60,39 +58,25 @@ public class BlobImportServlet extends HttpServlet {
                     if (remoteFile.getPath().equals(localFile.getPath())) {
                         GcsFilename gcsFileName = new GcsFilename(BUCKETNAME, localFile.getPath());
                         log("Processing file: " + localFile.getPath());
-                        log("  gcsService.createOrReplace");
+                        // create a GCS output channel
                         GcsFileOptions gcsFileOptions = new GcsFileOptions.Builder().mimeType(localFile.getType()).build();
                         GcsOutputChannel outputChannel = gcsService.createOrReplace(gcsFileName, gcsFileOptions);
-                        log("  create ObjectOutputStream");
-                        @SuppressWarnings("resource")
-                        ObjectOutputStream oout = new ObjectOutputStream(Channels.newOutputStream(outputChannel));
-                        // Write the blob data to the output stream directly
-                        log("  decode");
-                        String fileContentBase64Enc = remoteFile.getData();
-                        byte[] fileContentDecoded = Base64.decodeBase64(fileContentBase64Enc);
-                        if (!Base64.encodeBase64URLSafeString(fileContentDecoded).equals(fileContentBase64Enc)) {
-                            log("  !! decoding error !!\n"
-                                    + new String(fileContentDecoded) + "\n"
-                                    + " was not re-encoded to\n"
-                                    + fileContentBase64Enc);
-                        } else {
-                            log ("  decoding successful");
+                        // decode
+                        String fileContentBase64UrlSafeEnc = remoteFile.getData();
+                        byte[] fileContentDecoded = Base64.decodeBase64(fileContentBase64UrlSafeEnc);
+                        // check decoded
+                        if (!Base64.encodeBase64URLSafeString(fileContentDecoded).equals(fileContentBase64UrlSafeEnc)) {
+                            log("  !! decode error !!\n"
+                                    + " decoded input would not re-encode to\n"
+                                    + remoteFile.getData());
                         }
-
-                        log("  write");
-                        oout.write(fileContentDecoded);
-                        // And finalize
-                        log("  close");
-                        oout.close();
-                        // Get the new file's BlobKey
-                        log("  blobstoreService.createGsBlobKey");
+                        outputChannel.write(ByteBuffer.wrap(fileContentDecoded));
+                        outputChannel.close();
+                        // Update the local StaticFile's blobkey
                         BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/" +
                                 gcsFileName.getBucketName() + "/" +
                                 gcsFileName.getObjectName());
-                        // Update the local StaticFile's blobkey
-                        log(" localFile.setBlobKey");
                         localFile.setBlobKey(blobKey.getKeyString());
-                        log("  localFile.update");
                         localFile.update();
                         log("Done");
                     }
