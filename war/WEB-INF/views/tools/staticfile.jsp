@@ -11,43 +11,14 @@
 	<ui:navigation/>
 	<div class="block">
 		<h1>New Static File</h1>
-		
-		<form method="post" action="${uploadUrl}" enctype="multipart/form-data">
-			
-			<fieldset>
-			<label for="name">Name</label>
-			<input id="name" name="name" value="${file.name}"/>
-			</fieldset>
-			
-			<fieldset>
-			<label for="path">Path</label>
-			<span class="read-only">/staticfile/</span><input class="short" id="path" name="path" value="${file.path}"/>
-			</fieldset>
-			
-			<br/>
-			
-			<fieldset>
-			<label for="type">Type</label>
-			<input id="type" name="type" value="${file.type}"/>
-			</fieldset>
-			
-			<fieldset>
-			<label for="owner">Owner</label>
-			<input class="read-only" readonly="readonly" id="owner" name="owner" value="${file.owner}"/>
-			</fieldset>
-			
-			<br/>
-			
-			<fieldset>
-				<input type="file" name="uploadedFile"/>
-			</fieldset>
 
-			<fieldset>
-				<input class="submit" type="Submit" value="Save"/>
-			</fieldset>
-					
-		</form>
-		
+        <h2>This feature is no longer available</h2>
+
+        <p>
+            This microapp is no longer accepting static file uploads. Please use an alternative technique for serving
+            static file content.
+        </p>
+
 		<br>
 </div>
 	</body>

@@ -35,7 +35,7 @@ public class StaticFileCreateAndEditServlet extends HttpServlet {
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
-		BlobKey blobKey = BlobstoreServiceFactory.getBlobstoreService().getUploadedBlobs(request).get("uploadedFile");
+		BlobKey blobKey = BlobstoreServiceFactory.getBlobstoreService().getUploads(request).get("uploadedFile").get(0);
 		StaticFile file = new StaticFile();
 		
 		if (blobKey != null) {
