@@ -76,6 +76,7 @@ public class BlobImportServlet extends HttpServlet {
                         BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/" +
                                 gcsFileName.getBucketName() + "/" +
                                 gcsFileName.getObjectName());
+                        log("  new blobKey is " + blobKey.getKeyString());
                         localFile.setBlobKey(blobKey.getKeyString());
                         localFile.update();
                         log("Done");
