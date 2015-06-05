@@ -46,5 +46,14 @@
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="com.google.appengine.tools:appengine-gcs-client:0.4.4" level="project" />
     <orderEntry type="library" name="gson-2.3.1" level="project" />
+=======
+    <orderEntry type="library" name="gson-2.3.1" level="project" />
+    <orderEntry type="library" name="datanucleus-appengine-1.0.7.final" level="project" />
+    <orderEntry type="library" name="datanucleus-core-1.1.5" level="project" />
+    <orderEntry type="library" name="datanucleus-jpa-1.1.5" level="project" />
+    <orderEntry type="library" name="appengine-api-1.0-sdk-1.3.4" level="project" />
+    <orderEntry type="library" name="appengine-api" level="project" />
+    <orderEntry type="library" name="servlet-api" level="project" />
+>>>>>>> serve-staticfile-blobs-as-json
   </component>
 </module>
