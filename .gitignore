@@ -1,2 +1,8 @@
 war/WEB-INF/classes
 war/WEB-INF/appengine-generated
+.DS_Store
+.idea/
+src/.DS_Store
+war/.DS_Store
+war/WEB-INF/.DS_Store
+war/WEB-INF/lib/.DS_Store
