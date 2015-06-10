@@ -15,7 +15,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/admin/*</url-pattern>
 	</filter-mapping>
 
-	<servlet>
+    <servlet>
+        <servlet-name>BlobImport</servlet-name>
+        <servlet-class>com.gu.upload.tools.BlobImportServlet</servlet-class>
+    </servlet>
+    <servlet>
 		<servlet-name>StaticTextEditor</servlet-name>
 		<servlet-class>com.gu.upload.tools.StaticTextCreateAndEditServlet</servlet-class>
 	</servlet>
@@ -47,7 +51,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>StaticFile</servlet-name>
 		<servlet-class>com.gu.upload.staticfile.StaticFileServlet</servlet-class>
 	</servlet>
-	
+    <servlet>
+        <servlet-name>StaticFileJson</servlet-name>
+        <servlet-class>com.gu.upload.staticfile.StaticFileJsonServlet</servlet-class>
+    </servlet>
+
 	<servlet-mapping>
 		<servlet-name>StaticTextList</servlet-name>
 		<url-pattern>/admin/statictext/list</url-pattern>
@@ -57,6 +65,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>StaticFileList</servlet-name>
 		<url-pattern>/admin/staticfile/list</url-pattern>
 	</servlet-mapping>
+
+    <!--
+        /admin/staticfile/importblob/all
+        /admin/staticfile/importblob/static-file-path
+    -->
+    <servlet-mapping>
+        <servlet-name>BlobImport</servlet-name>
+        <url-pattern>/admin/staticfile/importblob/*</url-pattern>
+    </servlet-mapping>
 
 	<!-- 
 		/admin/statictext/new
@@ -89,7 +106,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>StaticText</servlet-name>
 		<url-pattern>/statictext/*</url-pattern>
 	</servlet-mapping>
-	
+
+    <!--
+        /staticfile/json/all
+        /staticfile/json/path-of-file
+    -->
+    <servlet-mapping>
+        <servlet-name>StaticFileJson</servlet-name>
+        <url-pattern>/staticfile/json/*</url-pattern>
+    </servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>StaticFile</servlet-name>
 		<url-pattern>/staticfile/*</url-pattern>

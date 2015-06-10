@@ -8,11 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.gu.upload.model.StaticFile;
 
 @SuppressWarnings("serial")
 public class StaticFileServlet extends HttpServlet {
+    public static final String BUCKETNAME = "static-host-hrd.appspot.com";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
@@ -27,13 +29,16 @@ public class StaticFileServlet extends HttpServlet {
 			return;
 		}
 
+        BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+
 		response.setContentType(staticFile.getType());
 
 		// cache for a day
 		response.setHeader("Cache-Control", "public, max-age=86400");
 
-		BlobstoreServiceFactory.getBlobstoreService().serve(
-				new BlobKey(staticFile.getBlobKey()), response);
+        BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/" + BUCKETNAME + "/" + path);
+
+        blobstoreService.serve(blobKey, response);
 	}
 
 	private String removeLeadingSlash(String path) {
